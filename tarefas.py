@@ -8,12 +8,17 @@ def main(pg:ft.Page):
     pg.window.width= 1000
     pg.window.height = 800
 
-
     lista_campos_tarefas = []
 
+    def excluir_campo(tarefa):
+        lista_campos_tarefas.remove(tarefa)
+
+
+
+
     def adicionar_campo_tarefa():
-        novo_campo= Campo_tarefa(texto_tarefa=lista_campos_tarefas.value)
-        lista_campos_tarefas.append(Campo_tarefa())
+        lista_campos_tarefas.append(Campo_tarefa(campo_tarefa.value,
+                                                 funcao_excluir=excluir_campo))
 
 
 
@@ -22,7 +27,7 @@ def main(pg:ft.Page):
 
    
 
-    texto_hello = ft.Text(value= "Godo Tarefas 🐹",
+    texto_hello = ft.Text(value= "Godo Tarefas🐹",
                        color="#604020",
                        size=35,
                        italic=True)
@@ -34,7 +39,7 @@ def main(pg:ft.Page):
                                                    bgcolor="#6D5542",on_click=adicionar_campo_tarefa)
 
     
-    campo_tarefa= ft.TextField(label="Digite aqui a sua tarefa",
+    campo_tarefa= ft.TextField(label="Digite aqui a sua tarefa📝",
                                color="#4A2E1B",
                                text_align="Center",
                                bgcolor="#CC9966",
