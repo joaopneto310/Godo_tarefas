@@ -3,7 +3,7 @@ from class_tarefa import Campo_tarefa
 import sqlite3 as sq
 from databases.conexao import conectar_bd
 from databases.create_database import criar_banco_dados 
-from model import mode_tarefa as mt
+from model import model_tarefa as mt
 
 def main(pg:ft.Page):
     pg.title= " Godo Tarefas"
@@ -27,6 +27,7 @@ def main(pg:ft.Page):
 
 
     def excluir_campo(tarefa):
+        mt.apagar_tarefas(campo_tarefa)
         lista_campos_tarefas.remove(tarefa)
 
 
@@ -36,9 +37,10 @@ def main(pg:ft.Page):
 
 
     def adicionar_campo_tarefa():
-        mt.inserir_tarefa(campo_tarefa.value)
+        cod_tarefa =  mt.inserir_tarefa(campo_tarefa.value)
         lista_campos_tarefas.append(Campo_tarefa(campo_tarefa.value,
-                                                 funcao_excluir=excluir_campo))
+                                                 funcao_excluir=excluir_campo,
+                                                 cod_tarefa=cod_tarefa))
         
         
       
@@ -47,7 +49,8 @@ def main(pg:ft.Page):
     tarefas_vindas_do_bd= mt.recuperar_tarefas()
     for tarefa in tarefas_vindas_do_bd:
         lista_campos_tarefas.append(Campo_tarefa(tarefa["tarefa"],
-                                                funcao_excluir=excluir_campo))
+                                                funcao_excluir=excluir_campo,
+                                                cod_tarefa=tarefa["cod_tarefa"]))
         
 
 
