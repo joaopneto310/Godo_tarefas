@@ -1,6 +1,9 @@
 import flet as ft
 from class_tarefa import Campo_tarefa
 import sqlite3 as sq
+from databases.conexao import conectar_bd
+from databases.create_database import criar_banco_dados 
+from model import mode_tarefa as mt
 
 def main(pg:ft.Page):
     pg.title= " Godo Tarefas"
@@ -9,24 +12,19 @@ def main(pg:ft.Page):
     pg.window.width= 1000
     pg.window.height = 800
 
+    criar_banco_dados()
 
-    #Criando a tabela de tarefas no banco de dados SQlITE3
-    conexao= sq.connect("BD_tarefas.sqlite") #Conectando ao banco de dados
-    cursor = conexao.cursor() #Criando o cursor
-    cursor.execute("""
-                CREATE TABLE IF NOT EXISTS TAREFAS(
-                   cod_tarefa INTEGER PRIMARY KEY AUTOINCREMENT,
-                   tarefa TEXT,
-                   statues TEXT);
 
-                   """)
-    conexao.commit()#Salvando as alterações
-    conexao.close() #fechando a conexão
+   
 
 
 
 
-    lista_campos_tarefas = []
+    
+
+    
+
+
 
     def excluir_campo(tarefa):
         lista_campos_tarefas.remove(tarefa)
@@ -34,25 +32,23 @@ def main(pg:ft.Page):
 
 
 
+
+
+
     def adicionar_campo_tarefa():
+        mt.inserir_tarefa(campo_tarefa.value)
         lista_campos_tarefas.append(Campo_tarefa(campo_tarefa.value,
                                                  funcao_excluir=excluir_campo))
         
-        #icluindo na tabela tarefas
-        conexao= sq.connect("BD_tarefas.sqlite")
-        cursor= conexao.cursor()
-        cursor.execute("""
-                            INSERT INTO tarefas(tarefas,status)
-                        VALUES (?, ?);
-                       """,
-        [campo_tarefa.value, "PENDENTE"] )
-        conexao.commit()
-        conexao.close()
+        
+      
 
-        campo_tarefa.value= ""
-
-
-
+    lista_campos_tarefas = []
+    tarefas_vindas_do_bd= mt.recuperar_tarefas()
+    for tarefa in tarefas_vindas_do_bd:
+        lista_campos_tarefas.append(Campo_tarefa(tarefa["tarefa"],
+                                                funcao_excluir=excluir_campo))
+        
 
 
 
